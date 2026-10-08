@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PyScript -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2026.7.3/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2026.7.3/core.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <title>The Nickname Atlas of East Asia</title>
+
+    <style>
+        :root {
+            /* Tree-inspired Color Palette */
+            --bg-base: #f4efe6;        /* Light Birch Birchwood / Off-white */
+            --surface: #ffffff;        /* Crisp White container background */
+            --forest-dark: #1b3022;    /* Deep Canopy Green for primary text & headers */
+            --bark-brown: #5c4033;     /* Earthy Bark Brown for accents */
+            --moss-green: #3d5a45;     /* Vibrant Leaf Green for buttons & highlights */
+            --moss-hover: #2d4333;     /* Darker Moss on hover */
+            --wood-ring: #d3c4b1;       /* Light Trunk Ring border color */
+            --text-muted: #5e685f;     /* Subtle Pine Needle Gray for body text */
+            
+            --radius-lg: 16px;
+            --radius-md: 8px;
+            --shadow: 0 10px 30px -5px rgba(27, 48, 34, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--forest-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            line-height: 1.6;
+        }
+
+        /* Card Container */
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--wood-ring);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem 2rem;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        /* Header Styling */
+        h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 2rem;
+            color: var(--forest-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--wood-ring), transparent);
+            margin-bottom: 2rem;
+            border: none;
+        }
+
+        /* Form Controls */
+        .lookup-box {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            text-align: left;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--bark-brown);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--forest-dark);
+            background-color: var(--bg-base);
+            border: 1px solid var(--wood-ring);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%205c4033' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--moss-green);
+            box-shadow: 0 0 0 3px rgba(61, 90, 69, 0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: var(--moss-green);
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background-color: var(--moss-hover);
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        /* Display Area for Output */
+        #thynick {
+            margin-top: 1.5rem;
+            padding: 1.25rem;
+            background-color: var(--bg-base);
+            border-radius: var(--radius-md);
+            border-left: 4px solid var(--bark-brown);
+            min-height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--forest-dark);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h2>The Nickname Atlas</h2>
+        <p class="subtitle">Discover historical and modern monikers of East Asian nations.</p>
+
+        <hr class="divider">
+
+        <div class="lookup-box">
+            <label for="kuni">Select a Region</label>
+            <select id="kuni">
+                <option value="0">China</option>
+                <option value="1">Japan</option>
+                <option value="2">Mongolia</option>
+                <option value="3">North Korea</option>
+                <option value="4">South Korea</option>
+                <option value="5">Taiwan</option>
+                <option value="6">Hong Kong</option>
+                <option value="7">Macau</option>
+            </select>
+
+            <button py-click="show_nickname">Reveal Nickname</button>
+            
+            <div id="thynick">
+                <!-- Nickname output renders here -->
+            </div>
+        </div>
+    </div>
+
+    <py-script src="main.py"></py-script>
+
+</body>
+</html>
